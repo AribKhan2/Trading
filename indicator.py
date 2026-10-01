@@ -269,5 +269,55 @@ def find_swing_points(df, window=39):
     df['Swing_Low'] = df['low'][(df['low'] == df['low'].rolling(center=True, window=2*window+1).min())]
 
     return df
+def calculate_rsi_numpy(close: np.ndarray, length: int = 14) -> np.ndarray:
+    """
+    Calculates Relative Strength Index (RSI) using Wilder's Smoothing via NumPy.
+    Matches TradingView / MT5 standard calculations exactly.
+    
+    :param prices: 1D NumPy array of close prices
+    :param length: Lookback period (default: 14)
+    :return: 1D NumPy array with calculated RSI values
+    """
+    prices=close
+    n = len(prices)
+    rsi = np.full(n, np.nan, dtype=np.float64)
+    
+    if n <= length:
+        return rsi
+
+    # 1. Calculate price changes (deltas)
+    deltas = np.diff(prices)
+    
+    # 2. Separate gains (positive changes) and losses (negative changes)
+    gains = np.where(deltas > 0, deltas, 0.0)
+    losses = np.where(deltas < 0, -deltas, 0.0)
+
+    # Arrays to store smoothed averages
+    avg_gains = np.zeros(n - 1, dtype=np.float64)
+    avg_losses = np.zeros(n - 1, dtype=np.float64)
+
+    # 3. First value is the SMA of the first 'length' changes
+    avg_gains[length - 1] = np.mean(gains[:length])
+    avg_losses[length - 1] = np.mean(losses[:length])
+
+    # 4. Apply Wilder's Smoothing across the rest of the array
+    for i in range(length, len(deltas)):
+        avg_gains[i] = (avg_gains[i - 1] * (length - 1) + gains[i]) / length
+        avg_losses[i] = (avg_losses[i - 1] * (length - 1) + losses[i]) / length
+
+    # 5. Compute Relative Strength (RS) and RSI
+    # Avoid division by zero when losses are 0
+    with np.errstate(divide='ignore', invalid='ignore'):
+        rs = avg_gains / avg_losses
+        rsi_values = 100.0 - (100.0 / (1.0 + rs))
+        
+        # Handle cases where avg_loss is 0 (RSI = 100)
+        rsi_values[avg_losses == 0] = 100.0
+
+    # Align output length with original price array length (shifts by 1 due to np.diff)
+    rsi[length:] = rsi_values[length - 1:]
+    
+    return rsi
+
 
 
