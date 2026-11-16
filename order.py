@@ -6,10 +6,6 @@ import torch
 from torch import nn
 
 
-real_mode=True
-trade_mode=False
-
-
 def posting_rate_ai(user_title,user_desc,user_source,user_hashtag):
 # 1. Define your model architecture
     class EngagementPredictor(nn.Module):
@@ -120,9 +116,7 @@ def facebook_post(post_text=None, image_url=None):
             :param post_text: Optional text message or photo caption
             :param image_url: Optional public URL of the image to post
             """
-            page_id ="1361535557047487"
-            page_access_token = "EAAVIZCE5Sa6YBSZB3mvtLQPqM16FJduZAJBntCGzrguB4fGrK3sKAXwnV4c7yz1dLLRZB2K1LiudcnByTqHZCdarBWGK1gmZAUn2KaR5IdYy5BEzZAwkEnwFjnR3oDZBYeiRV2DngXjCWdqO1nUrzQiWohOUkfIZBdZChoAPQMseZCzap9Gm83XRY3ZBoZC3Bjw6cZClk888f6"
-
+           
             # Determine endpoint and payload based on what inputs are provided
             if post_text and image_url:
                 # Case: Both text and image are provided
@@ -173,11 +167,7 @@ def binance_post_1(post,image=None):
     if real_mode:
         try:
             # Set your details
-            API_KEY = "98cd030b82f6412c9760c8b6cf3aceb2"  # Get this from Binance Creator Center
-
-            # Binance Square Posting Endpoint
-            url = "https://www.binance.com/bapi/composite/v1/public/pgc/openApi/content/add"
-
+            
             headers = {
                 "X-Square-OpenAPI-Key": API_KEY,
                 "Content-Type": "application/json",
@@ -223,11 +213,7 @@ def binance_post_2(post,image=None):
     if real_mode:
         try:
             # Set your details
-            API_KEY = "64b585507e874cbdbb3abcb525182c33"  # Get this from Binance Creator Center
-
-            # Binance Square Posting Endpoint
-            url = "https://www.binance.com/bapi/composite/v1/public/pgc/openApi/content/add"
-
+           
             headers = {
                 "X-Square-OpenAPI-Key": API_KEY,
                 "Content-Type": "application/json",
