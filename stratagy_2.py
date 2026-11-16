@@ -217,12 +217,6 @@ try:
 
     while True:
         start=time.perf_counter()
-        # mt5.login(
-        #     login=463925553
-        #     login=434232875,
-        #     password="240219#Arib",
-        #     server="Exness-MT5Trial7"
-        # )
         bar_count_e=calculate_required_bars(ema_length=slow_len,)
         rates= mt5.copy_rates_from_pos(symbol, timefram, 0, bar_count)
         rates_e= mt5.copy_rates_from_pos(symbol, timefram, 1, bar_count_e)
