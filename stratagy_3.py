@@ -73,11 +73,6 @@ try:
     # if login_success
     while True:
         start=time.perf_counter()
-        mt5.login(
-        login=434205874,
-        password="240219#Arib",
-        server="Exness-MT5Trial7"
-        )
         rates= mt5.copy_rates_from_pos(symbol, timeframe, 0, bar_count)
         df=pd.DataFrame(rates)
         print(df)
