@@ -1,0 +1,9 @@
+import MetaTrader5 as mt5
+#This Stratagy Base on: FIBO+Trend+Probability
+def fibo():
+    ...
+
+def trend():
+    ...
+def probability():
+    ...
